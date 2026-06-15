@@ -1,42 +1,75 @@
 <template>
-  <div class="app">
-    <header class="top-nav">
-      <div class="nav-container">
-        <div class="logo">
+  <div class="app" :class="{ 'sidebar-collapsed': isCollapsed }">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand" v-show="!isCollapsed">
           <h1>{{ t('nav.companyName') }}</h1>
-          <span class="subtitle">{{ t('nav.subtitle') }}</span>
+          <span class="sidebar-subtitle">{{ t('nav.subtitle') }}</span>
         </div>
-        <nav class="nav-tabs">
-          <router-link to="/" :class="{ active: $route.path === '/' }">
-            {{ t('nav.overview') }}
-          </router-link>
-          <router-link to="/inventory" :class="{ active: $route.path === '/inventory' }">
-            {{ t('nav.inventory') }}
-          </router-link>
-          <router-link to="/orders" :class="{ active: $route.path === '/orders' }">
-            {{ t('nav.orders') }}
-          </router-link>
-          <router-link to="/spending" :class="{ active: $route.path === '/spending' }">
-            {{ t('nav.finance') }}
-          </router-link>
-          <router-link to="/demand" :class="{ active: $route.path === '/demand' }">
-            {{ t('nav.demandForecast') }}
-          </router-link>
-          <router-link to="/reports" :class="{ active: $route.path === '/reports' }">
-            Reports
-          </router-link>
-        </nav>
+        <button class="sidebar-toggle" @click="toggleSidebar" :title="isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="18" height="18">
+            <path v-if="!isCollapsed" fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+            <path v-else fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+          </svg>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <router-link to="/" :class="{ active: $route.path === '/' }" :title="isCollapsed ? t('nav.overview') : ''">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="nav-icon">
+            <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+          </svg>
+          <span class="nav-label">{{ t('nav.overview') }}</span>
+        </router-link>
+        <router-link to="/inventory" :class="{ active: $route.path === '/inventory' }" :title="isCollapsed ? t('nav.inventory') : ''">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="nav-icon">
+            <path d="M10 2.5L2.5 6v8L10 17.5l7.5-3.5V6L10 2.5zM10 10L4.5 7.25V12l5.5 2.5V10zm1 4.5l5.5-2.5V7.25L11 10v4.5z" />
+          </svg>
+          <span class="nav-label">{{ t('nav.inventory') }}</span>
+        </router-link>
+        <router-link to="/orders" :class="{ active: $route.path === '/orders' }" :title="isCollapsed ? t('nav.orders') : ''">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="nav-icon">
+            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
+          </svg>
+          <span class="nav-label">{{ t('nav.orders') }}</span>
+        </router-link>
+        <router-link to="/spending" :class="{ active: $route.path === '/spending' }" :title="isCollapsed ? t('nav.finance') : ''">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="nav-icon">
+            <path fill-rule="evenodd" d="M1 4a1 1 0 011-1h16a1 1 0 011 1v8a1 1 0 01-1 1H2a1 1 0 01-1-1V4zm12 4a3 3 0 11-6 0 3 3 0 016 0zM4 9a1 1 0 100-2 1 1 0 000 2zm12-1a1 1 0 11-2 0 1 1 0 012 0zM2 15a1 1 0 011-1h14a1 1 0 110 2H3a1 1 0 01-1-1z" clip-rule="evenodd" />
+          </svg>
+          <span class="nav-label">{{ t('nav.finance') }}</span>
+        </router-link>
+        <router-link to="/demand" :class="{ active: $route.path === '/demand' }" :title="isCollapsed ? t('nav.demandForecast') : ''">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="nav-icon">
+            <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd" />
+          </svg>
+          <span class="nav-label">{{ t('nav.demandForecast') }}</span>
+        </router-link>
+        <router-link to="/reports" :class="{ active: $route.path === '/reports' }" :title="isCollapsed ? 'Reports' : ''">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="nav-icon">
+            <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
+          </svg>
+          <span class="nav-label">Reports</span>
+        </router-link>
+      </nav>
+
+      <div class="sidebar-footer">
         <LanguageSwitcher />
         <ProfileMenu
           @show-profile-details="showProfileDetails = true"
           @show-tasks="showTasks = true"
         />
       </div>
-    </header>
-    <FilterBar />
-    <main class="main-content">
-      <router-view />
-    </main>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="main-wrapper">
+      <FilterBar />
+      <main class="main-content">
+        <router-view />
+      </main>
+    </div>
 
     <ProfileDetailsModal
       :is-open="showProfileDetails"
@@ -55,8 +88,7 @@
 </template>
 
 <script>
-import { ref, onMounted, computed } from 'vue'
-import { api } from './api'
+import { ref, computed } from 'vue'
 import { useAuth } from './composables/useAuth'
 import { useI18n } from './composables/useI18n'
 import FilterBar from './components/FilterBar.vue'
@@ -79,74 +111,30 @@ export default {
     const { t } = useI18n()
     const showProfileDetails = ref(false)
     const showTasks = ref(false)
-    const apiTasks = ref([])
 
-    // Merge mock tasks from currentUser with API tasks
-    const tasks = computed(() => {
-      return [...currentUser.value.tasks, ...apiTasks.value]
-    })
+    // Initialize from localStorage so collapse state persists across sessions
+    const isCollapsed = ref(localStorage.getItem('sidebar-collapsed') === 'true')
 
-    const loadTasks = async () => {
-      try {
-        apiTasks.value = await api.getTasks()
-      } catch (err) {
-        console.error('Failed to load tasks:', err)
-      }
+    const toggleSidebar = () => {
+      isCollapsed.value = !isCollapsed.value
+      localStorage.setItem('sidebar-collapsed', isCollapsed.value)
     }
 
-    const addTask = async (taskData) => {
-      try {
-        const newTask = await api.createTask(taskData)
-        // Add new task to the beginning of the array
-        apiTasks.value.unshift(newTask)
-      } catch (err) {
-        console.error('Failed to add task:', err)
-      }
+    const tasks = computed(() => currentUser.value.tasks)
+
+    const addTask = (taskData) => {
+      currentUser.value.tasks.unshift({ id: Date.now(), ...taskData })
     }
 
-    const deleteTask = async (taskId) => {
-      try {
-        // Check if it's a mock task (from currentUser)
-        const isMockTask = currentUser.value.tasks.some(t => t.id === taskId)
-
-        if (isMockTask) {
-          // Remove from mock tasks
-          const index = currentUser.value.tasks.findIndex(t => t.id === taskId)
-          if (index !== -1) {
-            currentUser.value.tasks.splice(index, 1)
-          }
-        } else {
-          // Remove from API tasks
-          await api.deleteTask(taskId)
-          apiTasks.value = apiTasks.value.filter(t => t.id !== taskId)
-        }
-      } catch (err) {
-        console.error('Failed to delete task:', err)
-      }
+    const deleteTask = (taskId) => {
+      const index = currentUser.value.tasks.findIndex(t => t.id === taskId)
+      if (index !== -1) currentUser.value.tasks.splice(index, 1)
     }
 
-    const toggleTask = async (taskId) => {
-      try {
-        // Check if it's a mock task (from currentUser)
-        const mockTask = currentUser.value.tasks.find(t => t.id === taskId)
-
-        if (mockTask) {
-          // Toggle mock task status
-          mockTask.status = mockTask.status === 'pending' ? 'completed' : 'pending'
-        } else {
-          // Toggle API task
-          const updatedTask = await api.toggleTask(taskId)
-          const index = apiTasks.value.findIndex(t => t.id === taskId)
-          if (index !== -1) {
-            apiTasks.value[index] = updatedTask
-          }
-        }
-      } catch (err) {
-        console.error('Failed to toggle task:', err)
-      }
+    const toggleTask = (taskId) => {
+      const task = currentUser.value.tasks.find(t => t.id === taskId)
+      if (task) task.status = task.status === 'pending' ? 'completed' : 'pending'
     }
-
-    onMounted(loadTasks)
 
     return {
       t,
@@ -155,13 +143,29 @@ export default {
       tasks,
       addTask,
       deleteTask,
-      toggleTask
+      toggleTask,
+      isCollapsed,
+      toggleSidebar
     }
   }
 }
 </script>
 
 <style>
+:root {
+  --sidebar-width: 240px;
+  --sidebar-bg: #0f172a;
+  --sidebar-text: #94a3b8;
+  --sidebar-text-hover: #e2e8f0;
+  --sidebar-text-active: #ffffff;
+  --sidebar-active-indicator: #3b82f6;
+  --sidebar-hover-bg: #1e293b;
+  --sidebar-active-bg: rgba(59, 130, 246, 0.1);
+  --sidebar-border: #1e293b;
+  --sidebar-logo-text: #f8fafc;
+  --sidebar-collapsed-width: 56px;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -178,99 +182,119 @@ body {
 
 .app {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   min-height: 100vh;
 }
 
-.top-nav {
-  background: #ffffff;
-  border-bottom: 1px solid #e2e8f0;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
-  position: sticky;
+/* ── Sidebar ── */
+.sidebar {
+  position: fixed;
   top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--sidebar-width);
+  background: var(--sidebar-bg);
+  display: flex;
+  flex-direction: column;
   z-index: 100;
+  border-right: 1px solid var(--sidebar-border);
+  overflow: visible; /* prevent dropdown clipping in footer */
+  transition: width 0.2s ease;
 }
 
-.nav-container {
-  max-width: 1600px;
-  margin: 0 auto;
+.main-wrapper {
+  margin-left: var(--sidebar-width);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  /* DO NOT add overflow: auto — it breaks FilterBar sticky positioning */
+  transition: margin-left 0.2s ease;
+}
+
+/* ── Sidebar Header (Logo) ── */
+
+.sidebar-header h1 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--sidebar-logo-text);
+  letter-spacing: -0.025em;
+  line-height: 1.3;
+}
+
+.sidebar-subtitle {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--sidebar-text);
+  font-weight: 400;
+  margin-top: 0.25rem;
+}
+
+/* ── Sidebar Navigation ── */
+.sidebar-nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem;
+  gap: 2px;
+  overflow-y: auto;
+}
+
+.sidebar-nav a {
   display: flex;
   align-items: center;
-  padding: 0 2rem;
-  height: 70px;
-}
-
-.nav-container > .nav-tabs {
-  margin-left: auto;
-  margin-right: 1rem;
-}
-
-.nav-container > .language-switcher {
-  margin-right: 1rem;
-}
-
-.logo {
-  display: flex;
-  align-items: baseline;
   gap: 0.75rem;
-}
-
-.logo h1 {
-  font-size: 1.375rem;
-  font-weight: 700;
-  color: #0f172a;
-  letter-spacing: -0.025em;
-}
-
-.subtitle {
-  font-size: 0.813rem;
-  color: #64748b;
-  font-weight: 400;
-  padding-left: 0.75rem;
-  border-left: 1px solid #e2e8f0;
-}
-
-.nav-tabs {
-  display: flex;
-  gap: 0.25rem;
-}
-
-.nav-tabs a {
-  padding: 0.625rem 1.25rem;
-  color: #64748b;
+  padding: 0.6rem 0.75rem;
+  color: var(--sidebar-text);
   text-decoration: none;
   font-weight: 500;
-  font-size: 0.938rem;
+  font-size: 0.875rem;
   border-radius: 6px;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
   position: relative;
 }
 
-.nav-tabs a:hover {
-  color: #0f172a;
-  background: #f1f5f9;
+.sidebar-nav a:hover {
+  color: var(--sidebar-text-hover);
+  background: var(--sidebar-hover-bg);
 }
 
-.nav-tabs a.active {
-  color: #2563eb;
-  background: #eff6ff;
+.sidebar-nav a.active {
+  color: var(--sidebar-text-active);
+  background: var(--sidebar-active-bg);
 }
 
-.nav-tabs a.active::after {
+/* Active indicator: left-edge bar replacing the old bottom underline */
+.sidebar-nav a.active::before {
   content: '';
   position: absolute;
-  bottom: -1px;
   left: 0;
-  right: 0;
-  height: 2px;
-  background: #2563eb;
+  top: 4px;
+  bottom: 4px;
+  width: 3px;
+  border-radius: 0 2px 2px 0;
+  background: var(--sidebar-active-indicator);
 }
 
+.nav-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* ── Sidebar Footer ── */
+.sidebar-footer {
+  padding: 0.75rem;
+  border-top: 1px solid var(--sidebar-border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* ── Main Content ── */
 .main-content {
   flex: 1;
-  max-width: 1600px;
   width: 100%;
-  margin: 0 auto;
   padding: 1.5rem 2rem;
 }
 
@@ -482,5 +506,93 @@ tbody tr:hover {
   border-radius: 8px;
   margin: 1rem 0;
   font-size: 0.938rem;
+}
+
+/* ── Toggle Button ── */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0.75rem;
+  border-bottom: 1px solid var(--sidebar-border);
+  gap: 0.5rem;
+}
+
+.sidebar-brand {
+  overflow: hidden;
+  flex: 1;
+  min-width: 0;
+}
+
+.sidebar-toggle {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: var(--sidebar-text);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.sidebar-toggle:hover {
+  background: var(--sidebar-hover-bg);
+  color: var(--sidebar-text-hover);
+}
+
+/* ── Nav Label ── */
+.nav-label {
+  white-space: nowrap;
+  overflow: hidden;
+  transition: opacity 0.15s ease;
+}
+
+/* ── Collapsed State ── */
+.app.sidebar-collapsed .sidebar {
+  width: var(--sidebar-collapsed-width);
+}
+
+.app.sidebar-collapsed .main-wrapper {
+  margin-left: var(--sidebar-collapsed-width);
+}
+
+/* Center nav links and hide labels when collapsed */
+.app.sidebar-collapsed .sidebar-nav a {
+  justify-content: center;
+  padding: 0.6rem;
+  gap: 0;
+}
+
+.app.sidebar-collapsed .nav-label {
+  display: none;
+}
+
+/* Hide footer text in collapsed mode */
+.app.sidebar-collapsed .sidebar-footer {
+  align-items: center;
+  padding: 0.5rem;
+}
+
+.app.sidebar-collapsed .language-button .language-label,
+.app.sidebar-collapsed .language-button .chevron,
+.app.sidebar-collapsed .profile-button .profile-name,
+.app.sidebar-collapsed .profile-button .chevron {
+  display: none;
+}
+
+.app.sidebar-collapsed .language-button,
+.app.sidebar-collapsed .profile-button {
+  justify-content: center;
+  padding: 0.5rem;
+  width: auto;
+}
+
+/* Keep toggle button centered in collapsed header */
+.app.sidebar-collapsed .sidebar-header {
+  justify-content: center;
 }
 </style>
